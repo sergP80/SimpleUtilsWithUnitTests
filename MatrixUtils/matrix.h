@@ -14,7 +14,7 @@ namespace matrix {
 	private:
 		int rows;
 		int cols;
-		double** data;
+		double* (*data);
 
 		void init_data();
 		void check_indices(int i, int j) const;
@@ -34,7 +34,14 @@ namespace matrix {
 
 		const double& max() const;
 		const double& min() const;
+		const bool is_diag()const;
 		const double& det() const;
 		Matrix& inverse();
+
+		friend Matrix operator+(const Matrix& m1, const Matrix& m2);
+		friend bool operator==(const Matrix& m1, const Matrix& m2);
 	};
+
+	Matrix operator+(const Matrix& m1, const Matrix& m2);
+	bool operator==(const Matrix& m1, const Matrix& m2);
 }

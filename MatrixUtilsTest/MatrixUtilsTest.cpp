@@ -62,5 +62,89 @@ namespace MatrixUtilsTest
 			m(2, 2) = 5;
 
 		}
+
+		TEST_METHOD(TestMatrixIsDiag)
+		{
+			matrix::Matrix matr(3, 3);
+			init_diag_matrix1(matr);
+			Assert::IsTrue(matr.is_diag());
+		}
+
+		static void init_diag_matrix1(matrix::Matrix& m)
+		{
+			m(0, 0) = -5;
+			m(0, 1) = 0;
+			m(0, 2) = 0;
+
+			m(1, 0) = 0;
+			m(1, 1) = 1.5;
+			m(1, 2) = 0;
+
+			m(2, 0) = 0;
+			m(2, 1) = 0;
+			m(2, 2) = 0.8;
+
+		}
+
+		TEST_METHOD(TestMatrixIsNotDiagForNonSquare)
+		{
+			matrix::Matrix matr(3, 5);
+			Assert::IsFalse(matr.is_diag());
+		}
+
+		TEST_METHOD(TestMatrixIsNotDiagForSquare)
+		{
+			matrix::Matrix matr(3, 3);
+			init_diag_matrix2(matr);
+			Assert::IsFalse(matr.is_diag());
+		}
+
+		static void init_diag_matrix2(matrix::Matrix& m)
+		{
+			m(0, 0) = -5;
+			m(0, 1) = 0;
+			m(0, 2) = 0;
+
+			m(1, 0) = 0.001;
+			m(1, 1) = 1.5;
+			m(1, 2) = 0;
+
+			m(2, 0) = 0;
+			m(2, 1) = 0;
+			m(2, 2) = 0.8;
+
+		}
+
+		TEST_METHOD(TestMatrixIsEqual)
+		{
+			matrix::Matrix m1(3, 3);
+			matrix::Matrix m2(3, 3);
+			init_matrix1(m1);
+			init_matrix1(m2);
+			Assert::IsTrue(m1 == m2);
+		}
+
+		TEST_METHOD(TestMatrixIsNotEqualWhenRowsDifferent)
+		{
+			matrix::Matrix m1(4, 3);
+			matrix::Matrix m2(3, 3);
+			Assert::IsFalse(m1 == m2);
+		}
+
+		TEST_METHOD(TestMatrixIsNotEqualWhenColsDifferent)
+		{
+			matrix::Matrix m1(4, 3);
+			matrix::Matrix m2(4, 5);
+			Assert::IsFalse(m1 == m2);
+		}
+
+		TEST_METHOD(TestMatrixIsNotEqualWhenContentDifferent)
+		{
+			matrix::Matrix m1(3, 3);
+			matrix::Matrix m2(3, 3);
+			init_matrix1(m1);
+			init_matrix2(m2);
+			Assert::IsFalse(m1 == m2);
+		}
 	};
 }

@@ -1,4 +1,6 @@
 #include "matrix.h"
+#include <cmath>
+#include <algorithm>
 
 void matrix::Matrix::init_data()
 {
@@ -104,6 +106,30 @@ const double& matrix::Matrix::min() const
     return min;
 }
 
+const bool matrix::Matrix::is_diag() const
+{
+    if (rows != cols) {
+        return false;
+    }
+
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
+            if (i == j)
+            {
+                continue;
+            }
+
+            if (std::fabs(data[i][j]) != 0)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 /// <summary>
 /// 1. Реалізувати обчислення визначника матриці
 /// https://pro-prof.com/forums/topic/gauss-determinant_cplusplus
@@ -124,4 +150,46 @@ const double& matrix::Matrix::det() const
 matrix::Matrix& matrix::Matrix::inverse()
 {
     return *this;
+}
+
+matrix::Matrix matrix::operator+(const matrix::Matrix& m1, const matrix::Matrix& m2)
+{
+    int rows = std::min(m1.get_rows(), m2.get_rows());
+    int cols = std::min(m1.get_cols(), m2.get_cols());
+    
+    Matrix result(rows, cols);
+
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
+            result(i, j) = m1(i, j) + m2(i, j);
+        }
+    }
+    return result;
+}
+
+bool matrix::operator==(const Matrix& m1, const Matrix& m2)
+{
+    if (m1.get_rows() != m2.get_rows())
+    {
+        return false;
+    }
+
+    if (m1.get_cols() != m2.get_cols())
+    {
+        return false;
+    }
+
+    for (int i = 0; i < m1.get_rows(); ++i)
+    {
+        for (int j = 0; j < m1.get_cols(); ++j)
+        {
+            if (std::fabs(m1(i, j) - m2(i, j)) > 1e-3)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
